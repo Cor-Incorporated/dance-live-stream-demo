@@ -1,0 +1,7 @@
+{
+  "name": "Dance Live Stream Demo",
+  "description": "A demo application simulating a TikTok/YouTube Live-style dance practice and streaming experience, complete with viewer interaction, real-time feedback, and performance analytics.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
