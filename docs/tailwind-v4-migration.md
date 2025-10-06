@@ -28,11 +28,11 @@ Tailwind CSS v4では、PostCSSプラグインが**別パッケージに分離**
 
 ### 設定ファイルの変更
 
-| 項目 | v3 | v4 |
-|------|----|----|
-| PostCSSプラグイン | `tailwindcss` | `@tailwindcss/postcss` |
-| CSS記述 | `@tailwind base; @tailwind components; @tailwind utilities;` | `@import "tailwindcss";` |
-| 設定ファイル | `tailwind.config.js` 必須 | 不要（CSS First Configuration） |
+| 項目         | v3                                                           | v4                            |
+|--------------|--------------------------------------------------------------|-------------------------------|
+| PostCSSプラグイン | `tailwindcss`                                                | `@tailwindcss/postcss`        |
+| CSS記述      | `@tailwind base; @tailwind components; @tailwind utilities;` | `@import "tailwindcss";`      |
+| 設定ファイル     | `tailwind.config.js` 必須                                    | 不要（CSS First Configuration） |
 
 ## ✅ 解決方法
 
