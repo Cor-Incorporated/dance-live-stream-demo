@@ -7,6 +7,7 @@ import { useRealtimeScore } from '../hooks/useRealtimeScore';
 import CommentPopup from './CommentPopup';
 import DonationModal from './DonationModal';
 import FeedbackDisplay from './FeedbackDisplay';
+import InsightsModal from './InsightsModal';
 import RealtimeChart from './RealtimeChart';
 import YouTubePlayerWrapper from './YouTubePlayerWrapper';
 
@@ -24,6 +25,7 @@ const BackIcon = () => (
 
 const ViewerMode: React.FC<ViewerModeProps> = ({ streamId, onExit, onNextStream }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isInsightsOpen, setIsInsightsOpen] = useState(false);
   const { scoreData, addDonation } = useRealtimeScore(true);
   const { activeComments } = useMockComments(true);
   const [feedback, setFeedback] = useState<string | null>(null);
@@ -139,9 +141,17 @@ const ViewerMode: React.FC<ViewerModeProps> = ({ streamId, onExit, onNextStream 
             </button>
         </div>
         
-        {/* スワイプガイド */}
-        <div className="absolute top-4 right-4 z-40 bg-black/50 px-3 py-1 rounded-full text-xs text-white/70">
-          上下スワイプ
+        {/* スワイプガイドとインサイトボタン */}
+        <div className="absolute top-4 right-4 z-40 flex flex-col gap-2">
+          <button 
+            onClick={() => setIsInsightsOpen(true)}
+            className="bg-blue-600/80 hover:bg-blue-600 text-white px-3 py-1 rounded-full text-xs font-semibold"
+          >
+            📊 インサイト
+          </button>
+          <div className="bg-black/50 px-3 py-1 rounded-full text-xs text-white/70">
+            上下スワイプ
+          </div>
         </div>
       </header>
 
@@ -156,6 +166,17 @@ const ViewerMode: React.FC<ViewerModeProps> = ({ streamId, onExit, onNextStream 
         
         <div className="absolute bottom-20 left-1/2 -translate-x-1/2 w-4/5 h-40 opacity-70 pointer-events-none">
           <RealtimeChart data={scoreData} />
+        </div>
+
+        {/* 感情分析インジケーター */}
+        <div className="absolute top-4 right-16 z-40 bg-black/50 backdrop-blur-md rounded-full px-3 py-2 text-xs">
+          <div className="flex items-center gap-2">
+            <div className="flex gap-1">
+              <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+              <span className="text-green-400">{Math.floor(Math.random() * 20) + 70}%</span>
+            </div>
+            <div className="text-white/70">感情</div>
+          </div>
         </div>
 
         {feedback && (
@@ -178,6 +199,14 @@ const ViewerMode: React.FC<ViewerModeProps> = ({ streamId, onExit, onNextStream 
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onDonate={handleDonate}
+      />
+      
+      {/* 詳細インサイトモーダル */}
+      <InsightsModal
+        isOpen={isInsightsOpen}
+        onClose={() => setIsInsightsOpen(false)}
+        scoreData={scoreData}
+        activeComments={activeComments}
       />
     </motion.div>
   );

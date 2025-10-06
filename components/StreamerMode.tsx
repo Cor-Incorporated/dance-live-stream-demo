@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { mockFeedback } from '../data/mockFeedback';
 import { useRealtimeScore } from '../hooks/useRealtimeScore';
 import FeedbackDisplay from './FeedbackDisplay';
+import InsightsModal from './InsightsModal';
 import RealtimeChart from './RealtimeChart';
 import WebcamView from './WebcamView';
 import YouTubePlayerWrapper from './YouTubePlayerWrapper';
@@ -50,6 +51,7 @@ const UserIcon = () => (
 const StreamerMode: React.FC<StreamerModeProps> = ({ onStop, onGoToMyPage }) => {
   const [isStreaming, setIsStreaming] = useState(true);
   const [isVideoPlaying, setIsVideoPlaying] = useState(true);
+  const [isInsightsOpen, setIsInsightsOpen] = useState(false);
   const { scoreData } = useRealtimeScore(isStreaming);
   const [currentFeedback, setCurrentFeedback] = useState<string | null>(mockFeedback.regular[0]);
   const youtubePlayerRef = useRef<any>(null);
@@ -230,6 +232,11 @@ const StreamerMode: React.FC<StreamerModeProps> = ({ onStop, onGoToMyPage }) => 
             <div className="bg-black/50 p-2 rounded-lg flex flex-col items-center space-y-1">
                 <div className="text-xs text-red-400">● LIVE</div>
                 <div className="text-xs">視聴者: 18</div>
+                {/* 感情分析インジケーター */}
+                <div className="flex items-center gap-1 mt-1">
+                  <div className="w-1.5 h-1.5 bg-green-400 rounded-full"></div>
+                  <span className="text-xs text-green-400">{Math.floor(Math.random() * 15) + 80}%</span>
+                </div>
             </div>
             <button onClick={onGoToMyPage} className="p-2">
                 <UserIcon />
@@ -254,7 +261,21 @@ const StreamerMode: React.FC<StreamerModeProps> = ({ onStop, onGoToMyPage }) => 
         <button onClick={() => setIsStreaming(!isStreaming)} className="p-2">
           <PauseIcon />
         </button>
+        <button 
+          onClick={() => setIsInsightsOpen(true)} 
+          className="bg-blue-600/80 hover:bg-blue-600 text-white p-2 rounded-lg text-xs font-semibold"
+        >
+          📊 詳細
+        </button>
       </div>
+      
+      {/* 詳細インサイトモーダル */}
+      <InsightsModal
+        isOpen={isInsightsOpen}
+        onClose={() => setIsInsightsOpen(false)}
+        scoreData={scoreData}
+        activeComments={[]}
+      />
     </div>
   );
 };
